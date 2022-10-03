@@ -57,10 +57,12 @@ Your code here
 app.get('/authorize', (req, res) => {
 	const user = req?.query?.client_id;
 	const scopesIn = req?.query?.scope?.split(" ");
+	const myRandomString = randomString();
 
 	if (!user || !clients[user])  res.sendStatus(401);
-
 	if (!containsAll(clients[user].scopes, scopesIn)) res.sendStatus(401);
+
+	requests[myRandomString] = req.query;
 
 	res.end();
 
