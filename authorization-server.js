@@ -72,6 +72,7 @@ app.get('/authorize', (req, res) => {
 app.post('/approve', (req, res) => {
 	const { userName, password, requestId} = req.body;
 	let requestIdObj;
+	const authKey = randomString();
 
 	if(userName &&
 		 users[userName] &&
@@ -79,6 +80,7 @@ app.post('/approve', (req, res) => {
 		 users[userName] === password &&
 	   requests[requestId]) {
 		requestIdObj = requests[requestId];
+		authorizationCodes[authKey] = { clientReq: requestIdObj, userName }
 		delete requests[requestId];
 		res.end();
 	} else {
