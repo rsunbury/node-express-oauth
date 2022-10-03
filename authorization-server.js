@@ -69,7 +69,12 @@ app.get('/authorize', (req, res) => {
 })
 
 app.post('/approve', (req, res) => {
-	res.end();
+	const { userName, password} = req.body;
+	if(userName && users[userName] && password && users[userName] === password) {
+		res.end();
+	} else {
+		res.sendStatus(401);
+	}
 })
 
 const server = app.listen(config.port, "localhost", function () {
