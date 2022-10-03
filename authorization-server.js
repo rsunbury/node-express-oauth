@@ -8,6 +8,7 @@ const {
 	decodeAuthCredentials,
 	timeout,
 } = require("./utils")
+const { request } = require('express');
 
 const config = {
 	port: 9001,
@@ -69,8 +70,16 @@ app.get('/authorize', (req, res) => {
 })
 
 app.post('/approve', (req, res) => {
-	const { userName, password} = req.body;
-	if(userName && users[userName] && password && users[userName] === password) {
+	const { userName, password, requestId} = req.body;
+	let requestIdObj;
+
+	if(userName &&
+		 users[userName] &&
+		 password &&
+		 users[userName] === password &&
+	   requests[requestId]) {
+		requestIdObj = requests[requestId];
+		delete requests[requestId];
 		res.end();
 	} else {
 		res.sendStatus(401);
