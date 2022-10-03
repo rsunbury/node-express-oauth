@@ -55,12 +55,15 @@ Your code here
 */
 
 app.get('/authorize', (req, res) => {
-	const user = req.query.client_id;
-	if (user && clients[user]) {
-		res.end();
-	} else {
-		res.sendStatus(401);
-	}
+	const user = req?.query?.client_id;
+	const scopesIn = req?.query?.scope?.split(" ");
+
+	if (!user || !clients[user])  res.sendStatus(401);
+
+	if (!containsAll(clients[user].scopes, scopesIn)) res.sendStatus(401);
+
+	res.end();
+
 })
 
 const server = app.listen(config.port, "localhost", function () {
