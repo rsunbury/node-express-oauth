@@ -1,4 +1,5 @@
 const fs = require("fs")
+const url = require('url')
 const express = require("express")
 const bodyParser = require("body-parser")
 const jwt = require("jsonwebtoken")
@@ -81,8 +82,13 @@ app.post('/approve', (req, res) => {
 	   requests[requestId]) {
 		requestIdObj = requests[requestId];
 		authorizationCodes[authKey] = { clientReq: requestIdObj, userName }
-		delete requests[requestId];
-		res.end();
+		res.redirect(url.format({
+			pathname: requests[requestId].redirect_uri,
+			query: {
+				"code": authKey,
+				"state": requests[requestId].state,
+			}
+		}));
 	} else {
 		res.sendStatus(401);
 	}
