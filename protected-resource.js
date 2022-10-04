@@ -2,6 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const fs = require("fs")
 const { timeout } = require("./utils")
+const jwt = require('jsonwebtoken');
 
 const config = {
 	port: 9002,
@@ -33,7 +34,15 @@ Your code here
 */
 
 app.get('/user-info', (req, res) => {
-	if (!req.headers.authorization) return res.sendStatus(401);
+	const authToken = req.headers.authorization;
+	let verified;
+	if (!authToken) return res.sendStatus(401);
+	const token = authToken.slice('bearer '.length);
+	try {
+		verified = jwt.verify(token, config.publicKey, { algorithms: ['RS256']});
+	} catch (e) {
+		res.sendStatus(401);
+	}
 	res.end();
 })
 
