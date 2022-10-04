@@ -36,6 +36,7 @@ Your code here
 app.get('/user-info', (req, res) => {
 	const authToken = req.headers.authorization;
 	let verified;
+	let result = {};
 	if (!authToken) return res.sendStatus(401);
 	const token = authToken.slice('bearer '.length);
 	try {
@@ -43,7 +44,18 @@ app.get('/user-info', (req, res) => {
 	} catch (e) {
 		res.sendStatus(401);
 	}
-	res.end();
+
+	if (verified?.scope) {
+		result = verified.scope.split(' ').reduce((acc, e) => {
+			const prop = e.slice('permission:'.length);
+			if (users[verified.userName]?.[prop]) {
+				acc[prop] = users[verified.userName][prop];
+			}
+			return acc;
+		}, {});
+	}
+
+	res.json(result);
 })
 
 const server = app.listen(config.port, "localhost", function () {
