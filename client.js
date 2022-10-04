@@ -42,6 +42,10 @@ app.get('/authorize', (req, res) => {
 	res.end();
 })
 
+app.get('/callback', (req, res) => {
+	res.end()
+})
+
 const server = app.listen(config.port, "localhost", function () {
 	var host = server.address().address
 	var port = server.address().port
