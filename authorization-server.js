@@ -107,7 +107,7 @@ app.post('/token', (req, res) => {
 	delete authorizationCodes[req.body.code];
 	const privateKey = fs.readFileSync('./assets/private_key.pem');
 	token = jwt.sign({ userName: obj.userName, scope: obj.clientReq.scope }, privateKey, { algorithm: 'RS256'});
-	res.json(token);
+	res.json({ access_token: token, token_type: 'Bearer'});
 })
 
 const server = app.listen(config.port, "localhost", function () {
