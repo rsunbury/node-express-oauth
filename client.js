@@ -2,6 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const axios = require("axios").default
 const { randomString, timeout } = require("./utils")
+const url = require('url');
 
 const config = {
 	port: 9000,
@@ -28,6 +29,16 @@ Your code here
 */
 app.get('/authorize', (req, res) => {
 	state = randomString();
+	res.redirect(url.format({
+		pathname: config.authorizationEndpoint,
+		query: {
+			"response_type": 'code',
+			"client_id": config.clientId,
+			"redirect_uri": config.redirectUri,
+			scope: "permission:name permission:date_of_birth",
+			state,
+		}
+	}));
 	res.end();
 })
 
