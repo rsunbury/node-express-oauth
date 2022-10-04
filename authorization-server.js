@@ -81,12 +81,13 @@ app.post('/approve', (req, res) => {
 		 users[userName] === password &&
 	   requests[requestId]) {
 		requestIdObj = requests[requestId];
+		delete requests[requestId];
 		authorizationCodes[authKey] = { clientReq: requestIdObj, userName }
 		res.redirect(url.format({
-			pathname: requests[requestId].redirect_uri,
+			pathname: requestIdObj.redirect_uri,
 			query: {
 				"code": authKey,
-				"state": requests[requestId].state,
+				"state": requestIdObj.state,
 			}
 		}));
 	} else {
