@@ -56,8 +56,20 @@ app.get('/callback', (req, res) => {
     },
   })
     .then((result) => {
-      res.end()
+      console.log(result);
+      return axios({
+        method: 'get',
+        url: config.userInfoEndpoint,
+        headers: {
+          authorization: `bearer ${result.data.access_token}`,
+        },
+      })
     })
+    .then((result) => {
+      console.log(result);
+      res.end();
+    })
+    .catch(e => console.log(e))
 })
 
 const server = app.listen(config.port, "localhost", function () {
