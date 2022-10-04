@@ -56,7 +56,6 @@ app.get('/callback', (req, res) => {
     },
   })
     .then((result) => {
-      console.log(result);
       return axios({
         method: 'get',
         url: config.userInfoEndpoint,
@@ -66,15 +65,14 @@ app.get('/callback', (req, res) => {
       })
     })
     .then((result) => {
-      console.log(result);
       res.end();
     })
     .catch(e => console.log(e))
 })
 
 const server = app.listen(config.port, "localhost", function () {
-  var host = server.address().address
-  var port = server.address().port
+  let host = server.address().address
+  let port = server.address().port
 })
 
 // for testing purposes
