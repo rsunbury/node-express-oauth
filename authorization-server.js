@@ -96,9 +96,13 @@ app.post('/approve', (req, res) => {
 
 app.post('/token', (req, res) => {
 	let creds;
+	let obj;
 	if (!req.headers.authorization) res.sendStatus(401);
 	creds = decodeAuthCredentials(req.headers.authorization);
 	if (!clients[creds.clientId] || clients[creds.clientId].clientSecret !== creds.clientSecret) res.sendStatus(401);
+	if (!req?.body?.code || !authorizationCodes[req.body.code]) res.sendStatus(401);
+	obj = authorizationCodes[req.body.code];
+	delete authorizationCodes[req.body.code];
 	res.end();
 })
 
