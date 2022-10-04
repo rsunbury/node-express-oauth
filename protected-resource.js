@@ -33,6 +33,7 @@ Your code here
 */
 
 app.get('/user-info', (req, res) => {
+	if (!req.headers.authorization) return res.sendStatus(401);
 	res.end();
 })
 
