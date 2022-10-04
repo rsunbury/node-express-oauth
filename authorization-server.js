@@ -95,7 +95,10 @@ app.post('/approve', (req, res) => {
 })
 
 app.post('/token', (req, res) => {
+	let creds;
 	if (!req.headers.authorization) res.sendStatus(401);
+	creds = decodeAuthCredentials(req.headers.authorization);
+	if (!clients[creds.clientId] || clients[creds.clientId].clientSecret !== creds.clientSecret) res.sendStatus(401);
 	res.end();
 })
 
