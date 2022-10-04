@@ -65,7 +65,7 @@ app.get('/callback', (req, res) => {
       })
     })
     .then((result) => {
-      res.end();
+      res.render('welcome', { user: result.data })
     })
     .catch(e => console.log(e))
 })
