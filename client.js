@@ -27,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 Your code here
 */
 app.get('/authorize', (req, res) => {
+	state = randomString();
 	res.end();
 })
 

@@ -9,9 +9,9 @@ it("assigns a random value to the state @client-declare-state", () => {
 		.get("/authorize")
 		.then((res) => {
 			assert.equal(
-				[408, 302].indexOf(res.status) >= 0,
+				[408, 200].indexOf(res.status) >= 0,
 				true,
-				"The `/user-info` route should not return an error status code"
+				"The `/authorize` route should not return an error status code"
 			)
 			const state = getState()
 			assert.strictEqual(
